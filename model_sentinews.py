@@ -18,10 +18,10 @@ from transformers import AutoTokenizer, AutoModelForSequenceClassification, Trai
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--experiment_dir", type=str, default="debug")
+parser.add_argument("--data_config", type=str, default="sentence_level")
 parser.add_argument("--pretrained_name_or_path", type=str, default="EMBEDDIA/sloberta")
 parser.add_argument("--learning_rate", type=float, default=2e-5)
 parser.add_argument("--batch_size", type=int, default=128)
-# SloBERTa: 79
 parser.add_argument("--max_length", type=int, default=None)
 
 parser.add_argument("--num_epochs", type=int, default=10)
@@ -52,7 +52,7 @@ if __name__ == "__main__":
 
 	EVAL_EVERY_N_BATCHES = (args.eval_every_n_examples + args.batch_size - 1) // args.batch_size
 
-	data = datasets.load_dataset("cjvt/sentinews", "sentence_level", split="train")
+	data = datasets.load_dataset("cjvt/sentinews", args.data_config, split="train")
 	# Mark the target feature
 	data = data.class_encode_column("sentiment")
 	data = data.rename_column("sentiment", "labels")  # most models expect targets inside `labels=...` argument
