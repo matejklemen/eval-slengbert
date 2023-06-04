@@ -65,6 +65,9 @@ if __name__ == "__main__":
         logging.warning("--max_length is not set. Using max_length=64 as default, but you should set this to a "
                         "reasonable number such as the 95th or 99th percentile of training sequence lengths")
 
+    with open(os.path.join(args.experiment_dir, "experiment_config.json"), "w") as f:
+        json.dump(vars(args), fp=f, indent=4)
+
     EVAL_EVERY_N_BATCHES = (args.eval_every_n_examples + args.batch_size - 1) // args.batch_size
 
     data = datasets.load_dataset("cjvt/sentinews", args.data_config, split="train")
